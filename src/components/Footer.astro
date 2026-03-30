@@ -1,0 +1,29 @@
+---
+const now = new Date();
+const year = now.getFullYear();
+const updated = now.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' });
+const legalLinks = [
+  { href: '/politica-confidentialitate/', label: 'Confidentialitate' },
+  { href: '/politica-cookies/', label: 'Cookies' },
+  { href: '/termeni-si-conditii/', label: 'Termeni' },
+  { href: '/disclaimer-afiliere/', label: 'Disclaimer' },
+  { href: '/contact/', label: 'Contact' },
+];
+---
+<div class="footer">
+  <div class="wrap">
+    <div class="footer__inner">
+      <div class="footer__brand"><img src="/assets/images/logo-televizor4k.webp" alt="Televizor 4K" height="28" width="121" /></div>
+      <nav class="footer__links" aria-label="Pagini legale">
+        <a href="/despre-noi/">Despre noi</a>
+        {legalLinks.map(l => <a href={l.href} rel="nofollow">{l.label}</a>)}
+      </nav>
+    </div>
+    <div class="footer__bottom">
+      <span>&copy; {year} televizor4k.ro &middot; Actualizat {updated}</span>
+    </div>
+    <p class="footer__disclaimer">
+      Acest site contine link-uri de afiliere. Daca achizitionezi un produs prin link-urile noastre, putem primi un comision fara niciun cost suplimentar pentru tine. Preturile sunt orientative, verificati pretul final pe site-ul magazinului.
+    </p>
+  </div>
+</div>

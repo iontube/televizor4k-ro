@@ -1,0 +1,8 @@
+{
+  "name": "Televizor 4K",
+  "short_name": "TV4K",
+  "icons": [],
+  "theme_color": "#0a0a14",
+  "background_color": "#0a0a14",
+  "display": "standalone"
+}

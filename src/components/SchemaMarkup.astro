@@ -1,0 +1,122 @@
+---
+import products from '../data/products.json';
+
+const siteUrl = 'https://televizor4k.ro';
+const now = new Date().toISOString();
+const all = [...(products.ieftine || []), ...(products.buget || []), ...(products.premium || [])];
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'televizor4k.ro',
+  url: siteUrl,
+  description: 'Cele mai bune televizoare 4K din Romania, comparate si recomandate',
+  inLanguage: 'ro',
+};
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'televizor4k.ro',
+  url: siteUrl,
+  logo: `${siteUrl}/assets/images/logo-televizor4k.webp`,
+  description: 'Site independent de comparatii si recomandari de televizoare 4K',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: 'contact@televizor4k.ro',
+    contactType: 'customer service',
+    availableLanguage: 'Romanian',
+  },
+};
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: `Cele mai bune televizoare 4K in 2026: ${all.length} modele comparate si testate`,
+  description: 'Ce televizor 4K sa cumpar in 2026? Am comparat 18 televizoare 4K ieftine, de buget si premium de la Samsung, LG, Sony, TCL si Philips. LED, QLED, MiniLED si OLED de la 43 la 115 inch.',
+  image: `${siteUrl}/assets/images/og-cover.webp`,
+  datePublished: '2026-03-30T08:00:00+03:00',
+  dateModified: now,
+  url: siteUrl,
+  inLanguage: 'ro',
+  author: {
+    '@type': 'Person',
+    name: 'Echipa televizor4k.ro',
+    url: siteUrl,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'televizor4k.ro',
+    url: siteUrl,
+    logo: { '@type': 'ImageObject', url: `${siteUrl}/favicon.svg` },
+  },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Acasa', item: siteUrl },
+    { '@type': 'ListItem', position: 2, name: 'Cele mai bune televizoare 4K 2026', item: siteUrl },
+  ],
+};
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Cele mai bune televizoare 4K recomandate',
+  numberOfItems: all.length,
+  itemListElement: all.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: p.name,
+    url: `${siteUrl}/#recenzie-${p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')}`,
+  })),
+};
+
+const faqs = [
+  { q: 'Ce televizor 4K sa cumpar in 2026?', a: 'Depinde de buget si diagonala dorita. Sub 2.000 RON recomandam TCL 55P6K sau Samsung QLED 43Q7F2. Intre 2.000-4.000 RON, TCL QD-MiniLED 55C6K ofera cea mai buna calitate de imagine. Peste 4.000 RON, LG OLED evo C52 este referinta.' },
+  { q: 'Ce diagonala sa aleg la televizor 4K?', a: 'Regula generala: distanta de vizionare in metri inmultita cu 25 egal diagonala in inch. La 2m distanta alege 50 inch, la 2.5m alege 55-65 inch, la 3m+ alege 65-75 inch.' },
+  { q: 'Merita OLED fata de QLED sau LED?', a: 'OLED ofera negru perfect si contrast infinit, ideal pentru filme si gaming. QLED este mai luminos si nu are risc de burn-in. LED este cel mai accesibil. Pentru cinefili, OLED merita diferenta de pret.' },
+  { q: 'Ce inseamna 100Hz la televizor?', a: 'Un panou 100Hz afiseaza 100 de cadre pe secunda, ceea ce face miscarea mai fluida in sport, filme de actiune si gaming. 60Hz este standard, 100Hz este un upgrade vizibil.' },
+  { q: 'QLED vs LED: care e diferenta?', a: 'QLED foloseste Quantum Dot care imbunatateste culorile semnificativ fata de LED standard. Culorile sunt mai vibrante, acoperirea spectrului e mai larga si luminozitatea e mai mare.' },
+  { q: 'Care sunt cele mai bune branduri de televizoare 4K?', a: 'Samsung si LG au cel mai bun service in Romania. Sony are cea mai buna procesare de imagine. Philips are Ambilight unic. TCL si Hisense ofera cel mai bun raport calitate-pret.' },
+  { q: 'Ce televizor 4K e bun pentru gaming?', a: 'Pentru gaming ai nevoie de HDMI 2.1, 100Hz+ nativ si input lag scazut. LG OLED evo C52 este referinta. TCL QD-MiniLED 55C6K este alternativa accesibila cu Game Mode.' },
+  { q: 'Cand e cel mai bun moment sa cumpar un televizor?', a: 'Black Friday (noiembrie), reducerile de vara si inainte de evenimente sportive mari (Campionate Europene, Mondiale). Preturile variaza cu 20-35% de-a lungul anului.' },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'Cum alegi cel mai bun televizor 4K in 2026',
+  description: 'Ghid complet in 8 pasi pentru a alege televizorul 4K potrivit in functie de buget, diagonala, tehnologie de panou si functii smart.',
+  totalTime: 'PT15M',
+  step: [
+    { '@type': 'HowToStep', position: 1, name: 'Stabileste bugetul', text: 'Sub 2.000 RON gasesti televizoare LED si QLED de 43-55 inch. Intre 2.000-4.000 RON ai acces la MiniLED si diagonale de 65 inch. Peste 4.000 RON incepe zona OLED si diagonalelor de 75+ inch.' },
+    { '@type': 'HowToStep', position: 2, name: 'Alege diagonala corecta', text: 'Distanta de vizionare in metri x 25 = diagonala in inch. La 2m alege 50 inch, la 2.5m alege 55-65 inch, la 3m+ alege 65-75 inch.' },
+    { '@type': 'HowToStep', position: 3, name: 'Alege tipul de panou', text: 'LED este cel mai accesibil. QLED ofera culori mai bune. MiniLED are contrast superior. OLED ofera negru perfect. Alege in functie de buget si prioritati.' },
+    { '@type': 'HowToStep', position: 4, name: 'Verifica rezolutia si HDR', text: '4K (3840x2160) este standardul. HDR10 este minim necesar. Dolby Vision este superior. HDR10+ este alternativa Samsung.' },
+    { '@type': 'HowToStep', position: 5, name: 'Verifica rata de refresh', text: '60Hz este standard. 100Hz sau 120Hz este superior pentru sport, filme de actiune si gaming. Daca te uiti la sport, 100Hz merita investitia.' },
+    { '@type': 'HowToStep', position: 6, name: 'Alege sistemul Smart TV', text: 'Google TV este cel mai complet. WebOS (LG) este cel mai intuitiv. Tizen (Samsung) este cel mai stabil. Titan OS (Philips) este decent.' },
+    { '@type': 'HowToStep', position: 7, name: 'Verifica porturile HDMI', text: 'HDMI 2.1 este necesar pentru gaming 4K@120Hz pe PS5 si Xbox. HDMI 2.0 este suficient pentru streaming si TV. Minim 3 porturi HDMI sunt recomandate.' },
+    { '@type': 'HowToStep', position: 8, name: 'Compara preturile intre magazine', text: 'Acelasi televizor poate varia cu 200-500 RON intre eMAG, Altex, Flanco si Dedeman. Black Friday si reducerile de vara ofera cele mai bune preturi.' },
+  ],
+};
+---
+<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />

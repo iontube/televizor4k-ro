@@ -1,0 +1,433 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import ProductCard from '../components/ProductCard.astro';
+import ProductReview from '../components/ProductReview.astro';
+import Footer from '../components/Footer.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import products from '../data/products.json';
+
+const title = 'Cele mai bune televizoare 4K in 2026: 18 modele comparate si testate';
+const description = 'Ce televizor 4K sa cumpar in 2026? Am comparat 18 televizoare 4K ieftine, de buget si premium de la Samsung, LG, Sony, TCL si Philips. LED, QLED, MiniLED si OLED de la 43 la 115 inch.';
+const all = [...(products.ieftine || []), ...(products.buget || []), ...(products.premium || [])];
+const count = all.length;
+const now = new Date();
+const updated = now.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' });
+const isoDate = now.toISOString().split('T')[0];
+---
+<Layout title={title} description={description}>
+  <SchemaMarkup />
+  <Nav />
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="hero__inner">
+        <div class="hero__tag"><time datetime={isoDate}>Actualizat {updated}</time></div>
+        <h1>Ce televizor 4K sa cumpar in <em>2026</em></h1>
+        <p class="hero__sub">{count} televizoare 4K comparate pe calitate imagine, pret si functii smart. De la televizoare 4K ieftine sub 2.000 RON la OLED-uri premium si ecrane de 115 inch. Samsung, LG, Sony, TCL, Philips si Horizon.</p>
+        <div class="hero__actions">
+          <a href="#top-tv" class="btn btn--blue">Vezi top televizoare 4K</a>
+          <a href="#ghid" class="btn btn--glass">Cum alegi corect</a>
+        </div>
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <div class="hero__stat-val">{count || '—'}</div>
+            <div class="hero__stat-lbl">Modele comparate</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-val">3</div>
+            <div class="hero__stat-lbl">Categorii pret</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-val">2026</div>
+            <div class="hero__stat-lbl">Actualizat</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP 3 placeholder -->
+  <section id="top-tv">
+    <div class="wrap">
+      <div class="sec-head sec-head--center">
+        <span class="sec-head__tag">Top 3 recomandate</span>
+        <h2>Cele mai bune televizoare 4K in 2026</h2>
+        <p>Daca nu ai timp sa citesti toate cele 18 recenzii, acestea sunt cele 3 televizoare pe care le recomandam in functie de buget.</p>
+      </div>
+      <div class="top3">
+        <a href={`#recenzie-${products.buget[1].name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')}`} class="top3__card top3__card--gold">
+          <span class="top3__medal top3__medal--gold">1</span>
+          <div class="top3__visual">
+            <img src={`/assets/images/products/${products.buget[1].slug}.webp`} alt={products.buget[1].name} width="90" height="60" loading="lazy" />
+          </div>
+          <div class="top3__body">
+            <span class="top3__cat">Best buy 2026</span>
+            <span class="top3__name">{products.buget[1].name}</span>
+            <span class="top3__why">QD-MiniLED, 100Hz, Google TV. Calitate premium la pret de buget</span>
+          </div>
+        </a>
+        <a href={`#recenzie-${products.premium[2].name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')}`} class="top3__card top3__card--silver">
+          <span class="top3__medal top3__medal--silver">2</span>
+          <div class="top3__visual">
+            <img src={`/assets/images/products/${products.premium[2].slug}.webp`} alt={products.premium[2].name} width="90" height="60" loading="lazy" />
+          </div>
+          <div class="top3__body">
+            <span class="top3__cat">Referinta OLED</span>
+            <span class="top3__name">{products.premium[2].name}</span>
+            <span class="top3__why">OLED evo, 4x HDMI 2.1, Dolby Vision IQ. Cel mai bun televizor la 65"</span>
+          </div>
+        </a>
+        <a href={`#recenzie-${products.ieftine[2].name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')}`} class="top3__card top3__card--bronze">
+          <span class="top3__medal top3__medal--bronze">3</span>
+          <div class="top3__visual">
+            <img src={`/assets/images/products/${products.ieftine[2].slug}.webp`} alt={products.ieftine[2].name} width="90" height="60" loading="lazy" />
+          </div>
+          <div class="top3__body">
+            <span class="top3__cat">Cel mai ieftin 55"</span>
+            <span class="top3__name">{products.ieftine[2].name}</span>
+            <span class="top3__why">55 inch cu Google TV la cel mai mic pret posibil</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- IEFTINE -->
+  {products.ieftine?.length > 0 && (
+  <section id="ieftine" class="fade-up">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-head__tag">Sub 2.000 RON</span>
+        <h2>Televizoare 4K ieftine</h2>
+        <p>Cele mai bune televizoare 4K la pret mic din Romania. Modele cu HDR, Smart TV si diagonale de la 43 la 55 inch de la Hisense, Samsung si Philips.</p>
+      </div>
+      <div class="products">
+        {products.ieftine.map((p, i) => (
+          <ProductCard name={p.name} slug={p.slug} affiliate={p.affiliate} specs={p.specs} summary={p.summary} badge={i === 0 ? 'Cel mai ieftin' : undefined} badgeType="cheap" />
+        ))}
+      </div>
+    </div>
+  </section>
+  )}
+
+  {products.ieftine?.length > 0 && (
+  <section style="background:var(--bg-raised)">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-head__tag">Analize detaliate</span>
+        <h2>Recenzie detaliata pentru fiecare televizor 4K ieftin</h2>
+      </div>
+      {products.ieftine.map(p => (
+        <ProductReview name={p.name} slug={p.slug} affiliate={p.affiliate} specs={p.specs} review={p.review} />
+      ))}
+    </div>
+  </section>
+  )}
+
+  <!-- BUGET -->
+  {products.buget?.length > 0 && (
+  <section id="buget" class="fade-up">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-head__tag">Raport calitate-pret</span>
+        <h2>Televizoare 4K de buget</h2>
+        <p>Cele mai bune televizoare 4K intre 2.000 si 4.000 RON. Modele cu QLED, Dolby Vision, 120Hz si sisteme Smart TV avansate de la Samsung, LG, Hisense si Philips.</p>
+      </div>
+      <div class="products">
+        {products.buget.map((p, i) => (
+          <ProductCard name={p.name} slug={p.slug} affiliate={p.affiliate} specs={p.specs} summary={p.summary} badge={i === 0 ? 'Best Value' : undefined} badgeType="value" />
+        ))}
+      </div>
+    </div>
+  </section>
+  )}
+
+  {products.buget?.length > 0 && (
+  <section style="background:var(--bg-raised)">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-head__tag">Analize detaliate</span>
+        <h2>Recenzie detaliata pentru fiecare televizor 4K de buget</h2>
+      </div>
+      {products.buget.map(p => (
+        <ProductReview name={p.name} slug={p.slug} affiliate={p.affiliate} specs={p.specs} review={p.review} />
+      ))}
+    </div>
+  </section>
+  )}
+
+  <!-- PREMIUM -->
+  {products.premium?.length > 0 && (
+  <section id="premium" class="fade-up">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-head__tag">Fara compromisuri</span>
+        <h2>Televizoare 4K premium</h2>
+        <p>Cele mai bune televizoare din 2026 pentru cine vrea calitate de imagine perfecta. OLED, Mini LED, 120Hz nativ, Dolby Vision IQ si sunet premium de la LG, Samsung, Sony si Philips.</p>
+      </div>
+      <div class="products">
+        {products.premium.map((p, i) => (
+          <ProductCard name={p.name} slug={p.slug} affiliate={p.affiliate} specs={p.specs} summary={p.summary} badge={i === 0 ? 'Top alegere' : undefined} badgeType="top" />
+        ))}
+      </div>
+    </div>
+  </section>
+  )}
+
+  {products.premium?.length > 0 && (
+  <section style="background:var(--bg-raised)">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-head__tag">Analize detaliate</span>
+        <h2>Recenzie detaliata pentru fiecare televizor 4K premium</h2>
+      </div>
+      {products.premium.map(p => (
+        <ProductReview name={p.name} slug={p.slug} affiliate={p.affiliate} specs={p.specs} review={p.review} />
+      ))}
+    </div>
+  </section>
+  )}
+
+  <!-- COMPARATIE -->
+  <section id="comparatie">
+    <div class="wrap">
+      <div class="sec-head sec-head--center">
+        <span class="sec-head__tag">Comparatie directa</span>
+        <h2>Toate cele 18 televizoare 4K, comparate</h2>
+        <p>Fiecare televizor din selectia noastra, cu specificatiile esentiale puse cap la cap.</p>
+      </div>
+
+      <div class="comp-group">
+        <div class="comp-group__head">
+          <span class="comp-group__label">Sub 2.000 RON</span>
+          <span class="comp-group__title">Televizoare 4K ieftine</span>
+        </div>
+        <div class="comp-scroll">
+          <table class="comp-table">
+            <thead><tr><th>Model</th><th>Diagonala</th><th>Panou</th><th>Clasa</th><th>Smart TV</th><th>100Hz</th><th>Oferta</th></tr></thead>
+            <tbody>
+              {products.ieftine.map(p => (
+                <tr>
+                  <td><img src={`/assets/images/products/${p.slug}.webp`} alt="" width="40" height="27" loading="lazy" class="comp-table__thumb" />{p.name.replace('Televizor ', '')}</td>
+                  <td>{p.specs.diagonala}</td>
+                  <td>{p.specs.panou}</td>
+                  <td>{p.specs.clasa}</td>
+                  <td>{p.specs.panou === 'QLED' && p.name.includes('METZ') ? 'Google TV' : p.name.includes('TCL') || p.name.includes('Diamant') ? 'Google TV' : p.name.includes('Samsung') ? 'Tizen' : p.name.includes('LG') ? 'WebOS' : 'Da'}</td>
+                  <td>Nu</td>
+                  <td><a href={`/out/${p.slug}/`} class="comp-table__cta" rel="nofollow sponsored noopener" target="_blank">Vezi pret</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="comp-group">
+        <div class="comp-group__head">
+          <span class="comp-group__label">2.000 - 4.000 RON</span>
+          <span class="comp-group__title">Televizoare 4K de buget</span>
+        </div>
+        <div class="comp-scroll">
+          <table class="comp-table">
+            <thead><tr><th>Model</th><th>Diagonala</th><th>Panou</th><th>Clasa</th><th>Smart TV</th><th>100Hz</th><th>Oferta</th></tr></thead>
+            <tbody>
+              {products.buget.map(p => (
+                <tr>
+                  <td><img src={`/assets/images/products/${p.slug}.webp`} alt="" width="40" height="27" loading="lazy" class="comp-table__thumb" />{p.name.replace('Televizor ', '')}</td>
+                  <td>{p.specs.diagonala}</td>
+                  <td>{p.specs.panou}</td>
+                  <td>{p.specs.clasa}</td>
+                  <td>{p.name.includes('Horizon') || p.name.includes('TCL') || p.name.includes('Sony') ? 'Google TV' : p.name.includes('Samsung') ? 'Tizen' : p.name.includes('LG') ? 'WebOS' : 'Da'}</td>
+                  <td>{p.name.includes('55C6K') ? 'Da' : 'Nu'}</td>
+                  <td><a href={`/out/${p.slug}/`} class="comp-table__cta" rel="nofollow sponsored noopener" target="_blank">Vezi pret</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="comp-group">
+        <div class="comp-group__head">
+          <span class="comp-group__label">Premium</span>
+          <span class="comp-group__title">Televizoare 4K premium</span>
+        </div>
+        <div class="comp-scroll">
+          <table class="comp-table">
+            <thead><tr><th>Model</th><th>Diagonala</th><th>Panou</th><th>Clasa</th><th>Smart TV</th><th>100Hz</th><th>Oferta</th></tr></thead>
+            <tbody>
+              {products.premium.map(p => (
+                <tr>
+                  <td><img src={`/assets/images/products/${p.slug}.webp`} alt="" width="40" height="27" loading="lazy" class="comp-table__thumb" />{p.name.replace('Televizor ', '')}</td>
+                  <td>{p.specs.diagonala}</td>
+                  <td>{p.specs.panou}</td>
+                  <td>{p.specs.clasa}</td>
+                  <td>{p.name.includes('Philips') ? 'Titan OS' : p.name.includes('Samsung') ? 'Tizen' : p.name.includes('LG') ? 'WebOS' : 'Google TV'}</td>
+                  <td>{p.name.includes('Sony BRAVIA 3') ? 'Nu' : 'Da'}</td>
+                  <td><a href={`/out/${p.slug}/`} class="comp-table__cta" rel="nofollow sponsored noopener" target="_blank">Vezi pret</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GHID -->
+  <section id="ghid" style="background:var(--surface-alt)">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-head__tag">Ghid complet 2026</span>
+        <h2>Cum alegi cel mai bun televizor 4K fara sa dai gres</h2>
+      </div>
+      <div class="guide">
+        <img src="/assets/images/cum-alegi-cel-mai-bun-televizor-4k-ghid-complet-2026.webp" alt="Cum alegi cel mai bun televizor 4K in 2026 - ghid complet cu sfaturi practice" width="1200" height="600" loading="lazy" style="border-radius:var(--r-lg);margin-bottom:2rem;width:100%;height:auto" />
+
+        <p>Vrei sa cumperi un <strong>televizor 4K</strong> si nu stii de unde sa incepi. Normal. Daca intri pe eMAG sau Altex gasesti sute de modele, specificatii care par identice si preturi care variaza de la 800 la 80.000 de lei. Diferenta dintre un <strong>televizor ieftin si bun</strong> si unul ieftin si prost nu e intotdeauna vizibila din specificatii.</p>
+        <p>Am trecut prin toate <strong>televizoarele 4K</strong> relevante din Romania in 2026 si le-am comparat pe bune. Mai jos iti explicam exact ce conteaza, ce poti ignora si unde merita sa investesti mai mult.</p>
+
+        <h3>Cat de mare sa fie televizorul? Regula diagonalei</h3>
+        <img src="/assets/images/ce-diagonala-televizor-4k-distanta-vizionare-55-65-75-inch.webp" alt="Ce diagonala sa alegi la televizor 4K in functie de distanta de vizionare - 55, 65 sau 75 inch" width="1200" height="600" loading="lazy" style="border-radius:var(--r-lg);margin-bottom:1.5rem;width:100%;height:auto" />
+        <p>Cea mai frecventa intrebare si cea mai simpla de raspuns. Regula de baza: inmultesti distanta de vizionare in metri cu 25 si obtii diagonala ideala in inch. Stai la 2 metri de televizor? Ai nevoie de <strong>televizor 50 inch</strong>. La 2.5 metri? <strong>Televizor 55 inch</strong> sau <strong>televizor 65 inch</strong>. La 3 metri sau mai mult? 65-75 inch. Peste 4 metri distanta, <strong>televizoarele de 85-100 inch</strong> incep sa aiba sens.</p>
+        <p>Un <strong>televizor 55 inch</strong> are 139 cm diagonala. Un <strong>televizor 65 inch</strong> are 164 cm. Diferenta de 10 inch pare mica pe hartie dar in realitate ecranul de 65 inch are cu 40% mai multa suprafata decat cel de 55 inch. Daca bugetul permite si peretele e suficient de mare, ia intotdeauna diagonala mai mare. Nimeni nu s-a plans vreodata ca televizorul e prea mare.</p>
+        <p>Pentru dormitor sau bucatarie, un <strong>televizor 4K 108 cm</strong> (43 inch) este suficient. Pentru living-ul standard din Romania (distanta de vizionare 2.5-3 metri), <strong>televizor 4K 139 cm</strong> (55 inch) sau <strong>televizor 4K 164 cm</strong> (65 inch) este dimensiunea optima. Pentru home cinema dedicat, 75 inch sau mai mult transforma experienta complet.</p>
+
+        <h3>LED, QLED, MiniLED sau OLED: ce inseamna si care e diferenta</h3>
+        <img src="/assets/images/diferenta-led-qled-oled-miniled-televizor-4k-comparatie.webp" alt="Diferenta intre LED, QLED, OLED si MiniLED la televizoare 4K - comparatie vizuala" width="1200" height="600" loading="lazy" style="border-radius:var(--r-lg);margin-bottom:1.5rem;width:100%;height:auto" />
+        <p>Aici se incurca toata lumea. Sa clarificam simplu:</p>
+        <ul>
+          <li><strong>Televizor LED</strong> este tehnologia de baza. Un panou LCD retroiluminat cu LED-uri. Cel mai ieftin, dar si cu contrastul cel mai slab si culorile cele mai limitate. <strong>Televizor LED ieftin si bun</strong> gasesti de la 1.000 RON la 55 inch, ca <a href="#recenzie-televizor-tcl-led-55p6k">TCL 55P6K</a> sau <a href="#recenzie-televizor-led-diamant-by-horizon-55hl5530u-c">Diamant by Horizon 55HL5530U</a>.</li>
+          <li><strong>Televizor QLED</strong> adauga un strat de Quantum Dot peste LED. Rezultatul: culori cu 20-30% mai vibrante, luminozitate mai mare si unghiuri de vizionare mai bune. Diferenta fata de LED se vede cu ochiul liber. Un <strong>televizor QLED</strong> la 55 inch costa cu 200-400 RON mai mult, ca <a href="#recenzie-televizor-qled-star-light-55dm8600">Star-Light 55DM8600</a>.</li>
+          <li><strong>Televizor MiniLED</strong> (sau QD-MiniLED) foloseste mii de LED-uri mici in loc de sute mari. Asta permite zone de dimming locale precise: negrul e mai negru, albul e mai alb, contrastul e dramatic mai bun. <strong>Cel mai bun raport calitate-pret din 2026</strong> pentru cinefili, cum e <a href="#recenzie-televizor-tcl-qd-miniled-55c6k">TCL QD-MiniLED 55C6K</a>.</li>
+          <li><strong>Televizor OLED</strong> nu foloseste retroiluminare. Fiecare pixel emite propria lumina si se poate stinge individual. Rezultat: negru real, contrast foarte inalt, culori fidele, unghiuri de vizionare de 178 grade. Este referinta in calitate de imagine dar si cel mai scump. Un <strong>televizor OLED la 65 inch</strong> costa de la 4.000 RON, ca <a href="#recenzie-televizor-samsung-oled-65s85f">Samsung OLED 65S85F</a> sau <a href="#recenzie-televizor-lg-oled-evo-65c52la">LG OLED evo C52</a>.</li>
+        </ul>
+        <p>Recomandarea noastra: daca bugetul e sub 2.000 RON, ia <strong>QLED</strong>. Intre 2.000 si 4.000 RON, <strong>MiniLED</strong> este cel mai bun raport. Peste 4.000 RON, <strong>OLED</strong> daca iti permiti.</p>
+
+        <h3>Rezolutie 4K si HDR: ce conteaza cu adevarat</h3>
+        <p>Toate televizoarele din aceasta selectie au <strong>rezolutie 4K</strong> (3840 x 2160 pixeli), deci nu trebuie sa alegi intre rezolutii. Diferenta vine de la <strong>HDR</strong>. HDR (High Dynamic Range) extinde contrastul si paleta de culori, facand imaginea mai realista. <strong>HDR10</strong> este standardul de baza prezent pe aproape orice televizor 4K. <strong>Dolby Vision</strong> este superior si ajusteaza HDR-ul scena cu scena. <strong>HDR10+</strong> este alternativa Samsung la Dolby Vision.</p>
+        <p>In practica: daca te uiti pe Netflix sau Disney+, <strong>Dolby Vision</strong> face o diferenta vizibila. Daca te uiti la TV prin cablu sau satelit, HDR conteaza mai putin fiindca continutul nu este HDR. Nu te lasa impresionat de specificatii HDR pe televizoare ieftine, un panou LED basic nu poate reproduce HDR real chiar daca il suporta tehnic.</p>
+
+        <h3>Rata de refresh: 60Hz vs 100Hz vs 120Hz</h3>
+        <p>Un <strong>televizor 4K cu 60Hz</strong> afiseaza 60 de cadre pe secunda. Este suficient pentru film, serial si stiri. Un <strong>televizor 4K 120Hz</strong> (sau 100Hz in Europa) afiseaza dublu, ceea ce face miscarea semnificativ mai fluida. Diferenta se simte cel mai tare la sport (fotbal, tenis, Formula 1), filme de actiune rapida si gaming pe PS5 sau Xbox Series X.</p>
+        <p>Daca te uiti predominant la stiri si seriale, 60Hz e suficient si economisesti bani. Daca esti fan sport sau gamer, <strong>televizor 100Hz</strong> merita investitia. Multi producatori listeaza "Motion Rate 120" sau "Motion Clarity 120" care este interpolat software, nu 120Hz real pe panou. Verifica intotdeauna <strong>rata de refresh nativa</strong> a panoului, nu cea interpolata.</p>
+        <p>Un truc simplu: daca televizorul are port HDMI 2.1, panoul este aproape sigur 100Hz+ nativ. Daca are doar HDMI 2.0, panoul este probabil 60Hz cu interpolare software care nu este acelasi lucru.</p>
+
+        <h3>Smart TV: Google TV, WebOS, Tizen sau Titan OS</h3>
+        <p><strong>Google TV</strong> (TCL, Sony, Philips) este cel mai complet sistem <strong>Smart TV</strong>. Acces la Google Play Store cu mii de aplicatii, Chromecast integrat, Google Assistant si personalizare avansata. Daca folosesti deja produse Google, este alegerea naturala. Poti instala orice aplicatie Android TV, inclusiv cele care nu sunt disponibile pe alte platforme.</p>
+        <p><strong>WebOS</strong> (LG) este cel mai intuitiv si rapid. Magic Remote-ul LG permite navigare prin miscari de mana ca un mouse, ceea ce schimba complet experienta de folosire. Aplicatiile principale sunt disponibile si interfata e curata. Ideal daca vrei simpluitate fara compromisuri.</p>
+        <p><strong>Tizen</strong> (Samsung) este cel mai stabil si matur. SmartThings integreaza <strong>televizorul Samsung</strong> cu toate dispozitivele smart din casa. Samsung Gaming Hub ofera acces la cloud gaming fara consola. Ideal daca ai deja ecosistem Samsung.</p>
+        <p><strong>Titan OS</strong> (Philips) este decent dar mai limitat decat celelalte trei. Functioneaza bine pentru aplicatiile de baza dar nu are ecosistemul celorlalte platforme. Compenseza cu <a href="#recenzie-televizor-philips-ambilight-qled-75pus8510">Ambilight</a> care nu exista pe nicio alta platforma.</p>
+
+        <h3>Ce televizor 4K e bun pentru gaming?</h3>
+        <img src="/assets/images/televizor-4k-gaming-ps5-xbox-hdmi-2-1-120hz.webp" alt="Televizor 4K pentru gaming cu PS5 si Xbox - HDMI 2.1 si 120Hz in actiune" width="1200" height="600" loading="lazy" style="border-radius:var(--r-lg);margin-bottom:1.5rem;width:100%;height:auto" />
+        <p>Pentru <strong>gaming pe PS5 sau Xbox Series X</strong> ai nevoie de cateva lucruri specifice: <strong>HDMI 2.1</strong> (pentru 4K la 120fps), <strong>input lag scazut</strong> (sub 15ms), <strong>VRR</strong> (Variable Refresh Rate) pentru gameplay fara tearing si ALLM (Auto Low Latency Mode). <strong>LG OLED evo C52</strong> este referinta pentru <strong>televizor gaming</strong> cu 4 porturi HDMI 2.1 si input lag de sub 10ms.</p>
+        <p>Daca nu ai consola next-gen sau joci predominant pe PC la 60fps, HDMI 2.0 si 60Hz sunt suficiente si economisesti semnificativ. <strong>TCL QD-MiniLED 55C6K</strong> ofera 100Hz cu Game Mode la un pret mult mai accesibil.</p>
+        <p>Un aspect pe care multi il ignora: <strong>televizoarele OLED</strong> au cel mai mic input lag din industrie (sub 10ms), ceea ce inseamna ca reactia la controller este practic instantanee. Pentru jocuri competitive online, aceasta diferenta conteaza. Televizoarele LED si QLED au de obicei 15-25ms in Game Mode, suficient pentru gaming casual dar vizibil in jocuri rapide.</p>
+
+        <h3>Samsung, LG, Sony, TCL, Philips: ce brand sa alegi?</h3>
+        <ul>
+          <li><strong>Televizor Samsung</strong>: cel mai bun service din Romania, centre in toate orasele mari. Tizen Smart TV, SmartThings. Alegerea sigura pentru ecosistem si service.</li>
+          <li><strong>Televizor LG</strong>: referinta in OLED, WebOS cu Magic Remote, service disponibil national. <strong>LG OLED</strong> este standardul industriei pentru cinefili.</li>
+          <li><strong>Televizor Sony BRAVIA</strong>: cea mai buna procesare de imagine (procesor X1), acuratete cromatica de referinta, Google TV. Alegerea pentru puristi ai calitatii de imagine.</li>
+          <li><strong>Televizor TCL</strong>: cel mai bun raport calitate-pret, <strong>MiniLED</strong> accesibil, Google TV. Service mai limitat dar preturile bat orice competitie la specificatii egale.</li>
+          <li><strong>Televizor Philips Ambilight</strong>: Ambilight este unic si imbatabil ca experienta imersiva. Nimeni altcineva nu ofera iluminare ambientala pe 3 laturi care face ecranul sa para dublu.</li>
+          <li><strong>Televizor Horizon</strong>: brand romanesc cu fabrica la Timisoara. Preturi accesibile si service local rapid cu piese pe stoc.</li>
+        </ul>
+
+        <h3>Sunet: boxele integrate vs soundbar</h3>
+        <p>Televizoarele 4K moderne sunt subtiri, ceea ce inseamna ca spatiul pentru boxe este minim. Sunetul integrat este acceptabil pentru stiri si emisiuni, dar pentru filme si muzica este sub asteptari, chiar si la modele premium ca <a href="#recenzie-televizor-sony-bravia-3-led-85s35">Sony BRAVIA 85S35</a>. Un <strong>soundbar</strong> de 300-500 RON imbunatateste dramatic experienta audio si este cea mai buna investitie complementara dupa televizor.</p>
+        <p>Daca bugetul nu permite un soundbar separat, cauta televizoare cu <strong>Dolby Atmos</strong> integrat (LG OLED, Samsung OLED) sau cu boxe orientate in fata (Sony BRAVIA). Evita sa montezi televizorul pe perete fara sa verifici unde sunt orientate boxele, multe modele au boxele pe spate si sunetul se pierde in perete.</p>
+
+        <h3>Cand cumperi televizorul la cel mai bun pret</h3>
+        <p><strong>Preturile la televizoare</strong> variaza cu 20-35% de-a lungul anului. Cele mai bune perioade: <strong>Black Friday</strong> (noiembrie) cand reducerile sunt reale si semnificative, reducerile de vara (iulie-august) cand se lichideaza stocurile de modele curente, si inainte de <strong>evenimente sportive mari</strong> (Campionate Europene, Mondiale, Jocuri Olimpice) cand magazinele fac promotii tematice.</p>
+        <p>Compara preturile intre eMAG, Altex, Flanco si Dedeman. Acelasi televizor poate avea diferente de 200-500 RON intre magazine. Nu te lasa pacalit de pretul barat, compara pretul actual cu alte magazine, nu cu pretul barat de pe acelasi site. Foloseste site-uri de comparare preturi ca sa verifici istoricul pretului inainte de cumparare.</p>
+
+        <h3>Montaj si pozitionare: ce trebuie sa stii</h3>
+        <img src="/assets/images/montaj-televizor-4k-pe-perete-living-modern.webp" alt="Montaj televizor 4K pe perete in living modern - pozitionare corecta la nivelul ochilor" width="1200" height="600" loading="lazy" style="border-radius:var(--r-lg);margin-bottom:1.5rem;width:100%;height:auto" />
+        <p>Centrul ecranului trebuie sa fie la nivelul ochilor cand stai pe canapea. Daca montezi pe perete, asigura-te ca <strong>suportul VESA</strong> este compatibil (dimensiunea se gaseste in specificatii). Evita lumina directa pe ecran, fie de la fereastra fie de la o lampa. Un televizor pozitionat cu fereastra in spate va parea spalacit la orice luminozitate.</p>
+        <p>Pentru <strong>televizoare de 75 inch</strong> sau mai mari, montajul pe perete necesita un perete solid (caramida sau beton, nu rigips nesustinut). Greutatea unui televizor de 85 inch poate depasi 30 kg, deci suportul trebuie sa fie adecvat. Lasa minim 5 cm spatiu intre televizor si perete pentru ventilatie, mai ales la OLED-uri care genereaza caldura pe panoul din spate.</p>
+        <div class="guide__tip">
+          <strong>Sfat practic</strong>
+          <p>Inainte sa comanzi, masoara spatiul de pe perete sau de pe comoda. Televizorul de 65 inch are 145 cm latime si 83 cm inaltime fara picioruse. Televizorul de 75 inch are 167 cm latime. Pare simplu, dar multi comanda un televizor prea mare pentru mobilierul existent si ajung sa il returneze.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head sec-head--center">
+        <span class="sec-head__tag">Intrebari frecvente</span>
+        <h2>Ce trebuie sa stii inainte sa cumperi un televizor 4K</h2>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-card">
+          <button class="faq-card__q" aria-expanded="false">Ce televizor 4K sa cumpar in 2026?</button>
+          <div class="faq-card__a">Depinde de buget si diagonala dorita. Sub 2.000 RON recomandam TCL 55P6K sau Samsung QLED 43Q7F2. Intre 2.000-4.000 RON, TCL QD-MiniLED 55C6K ofera cea mai buna calitate de imagine. Peste 4.000 RON, LG OLED evo C52 este referinta.</div>
+        </div>
+        <div class="faq-card">
+          <button class="faq-card__q" aria-expanded="false">Ce diagonala sa aleg la televizor 4K?</button>
+          <div class="faq-card__a">Distanta de vizionare in metri inmultita cu 25 egal diagonala in inch. La 2m alege 50 inch, la 2.5m alege 55-65 inch, la 3m+ alege 65-75 inch.</div>
+        </div>
+        <div class="faq-card">
+          <button class="faq-card__q" aria-expanded="false">Merita OLED fata de QLED sau LED?</button>
+          <div class="faq-card__a">OLED ofera negru perfect si contrast infinit, ideal pentru filme si gaming. QLED este mai luminos si nu are risc de burn-in. LED este cel mai accesibil. Pentru cinefili, OLED merita diferenta de pret.</div>
+        </div>
+        <div class="faq-card">
+          <button class="faq-card__q" aria-expanded="false">Ce inseamna 100Hz la televizor?</button>
+          <div class="faq-card__a">Un panou 100Hz afiseaza 100 de cadre pe secunda, miscarea e mai fluida in sport, filme de actiune si gaming. 60Hz e standard, 100Hz e un upgrade vizibil mai ales la continut rapid.</div>
+        </div>
+        <div class="faq-card">
+          <button class="faq-card__q" aria-expanded="false">QLED vs LED: care e diferenta?</button>
+          <div class="faq-card__a">QLED foloseste Quantum Dot care imbunatateste culorile cu 20-30% fata de LED standard. Culorile sunt mai vibrante, luminozitatea mai mare si unghiurile de vizionare mai bune. Diferenta de pret e de 200-400 RON.</div>
+        </div>
+        <div class="faq-card">
+          <button class="faq-card__q" aria-expanded="false">Ce televizor 4K e bun pentru gaming?</button>
+          <div class="faq-card__a">Pentru PS5 si Xbox ai nevoie de HDMI 2.1, 100Hz+ si input lag scazut. LG OLED evo C52 este referinta. TCL QD-MiniLED 55C6K este alternativa accesibila cu Game Mode.</div>
+        </div>
+        <div class="faq-card">
+          <button class="faq-card__q" aria-expanded="false">Care sunt cele mai bune branduri de televizoare 4K?</button>
+          <div class="faq-card__a">Samsung si LG au cel mai bun service in Romania. Sony are cea mai buna procesare de imagine. Philips are Ambilight unic. TCL si Horizon ofera cel mai bun raport calitate-pret.</div>
+        </div>
+        <div class="faq-card">
+          <button class="faq-card__q" aria-expanded="false">Cand e cel mai bun moment sa cumpar un televizor?</button>
+          <div class="faq-card__a">Black Friday (noiembrie), reducerile de vara si inainte de evenimente sportive mari. Preturile variaza cu 20-35% de-a lungul anului. Compara intre eMAG, Altex, Flanco si Dedeman.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="endcta">
+    <div class="wrap">
+      <div class="endcta__inner">
+        <h2>Alege televizorul potrivit</h2>
+        <p>18 televizoare 4K comparate pe specificatii reale. Alege categoria ta si citeste recenziile.</p>
+        <div class="endcta__grid">
+          <a href="#ieftine" class="endcta__item">
+            <span class="endcta__price">Sub 2.000 RON</span>
+            <span class="endcta__desc">QLED si LED, 43-55 inch</span>
+            <span class="endcta__count">6 modele &rarr;</span>
+          </a>
+          <a href="#buget" class="endcta__item">
+            <span class="endcta__price">2.000 - 4.000 RON</span>
+            <span class="endcta__desc">MiniLED, 65 inch, Sony BRAVIA</span>
+            <span class="endcta__count">6 modele &rarr;</span>
+          </a>
+          <a href="#premium" class="endcta__item endcta__item--accent">
+            <span class="endcta__price">4.000+ RON</span>
+            <span class="endcta__desc">OLED, Ambilight, 85-115 inch</span>
+            <span class="endcta__count">6 modele &rarr;</span>
+          </a>
+        </div>
+        <a href="#top-tv" class="btn btn--plum" style="margin-top:1.25rem">Inapoi la Top 3 &uarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
