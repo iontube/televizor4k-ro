@@ -166,6 +166,9 @@ section{padding:2.5rem 0}
 .sec-head__tag{display:inline-block;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#7a6010;padding:.2rem .6rem;background:var(--gold-light);border-radius:var(--r-sm);margin-bottom:.5rem}
 @media(min-width:768px){.sec-head__tag{font-size:.64rem;margin-bottom:.65rem}}
 .sec-head h2{margin-bottom:.3rem}
+/* catalog/product section headings hold long product names — scale them down vs the marketing h2 */
+.rec-sec .sec-head h2,.tvp-sec .sec-head h2{font-size:clamp(1.15rem,2.6vw,1.55rem);line-height:1.25}
+.tvp-sec .sec-head{margin-bottom:1rem}
 .sec-head p{color:var(--ink-mid);font-size:.88rem;max-width:620px;line-height:1.6}
 @media(min-width:768px){.sec-head p{font-size:.95rem}}
 .sec-head--center{text-align:center}
@@ -382,3 +385,52 @@ section{padding:2.5rem 0}
   .fade-up{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
   .fade-up.vis{opacity:1;transform:translateY(0)}
 }
+
+/* ===== recomandari (4K TV catalog): reuses existing .card/.products; adds price+button+detail page ===== */
+.card__price-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
+.card__price{font-size:18px;font-weight:800;color:var(--ink)}
+.card__price-row s{font-size:12px;color:var(--ink-light)}
+button.card__cta{border:0;cursor:pointer;font-family:inherit}
+.rec-sec,.tvp-sec{padding:30px 0 54px}
+.rec-bc{font-size:13px;color:var(--ink-light);margin-bottom:18px}
+.rec-bc a{color:var(--plum)}.rec-bc a:hover{color:var(--plum-dark)}
+.rec-back{margin-top:26px;font-size:14px}.rec-back a{color:var(--plum);font-weight:600}
+/* pager — intentional on mobile (stacked label, equal buttons) */
+.rec-pager{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:36px;flex-wrap:wrap}
+.rec-pg{flex:0 0 auto;color:var(--plum);font-weight:600;border:1px solid var(--border);padding:10px 18px;border-radius:8px;text-decoration:none;background:var(--surface);transition:.15s}
+.rec-pg:hover{border-color:var(--plum-light);background:var(--surface-alt)}
+.rec-pg--off{color:var(--ink-faint);border-color:var(--border-light);pointer-events:none;background:transparent}
+.rec-pg-now{font-size:14px;color:var(--ink-mid)}
+@media(max-width:560px){.rec-pager{gap:8px}.rec-pg-now{order:1;flex-basis:100%;text-align:center;margin-bottom:2px}.rec-pg{flex:1;order:2;text-align:center;padding:11px 8px;font-size:13.5px}}
+/* product detail page */
+.tvp-main{display:grid;grid-template-columns:1fr;gap:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px;margin-bottom:28px}
+.tvp-gallery{background:#fff;border:1px solid var(--border-light);border-radius:var(--r);display:flex;align-items:center;justify-content:center;padding:20px;min-height:280px}
+.tvp-gallery img{max-width:100%;max-height:420px;object-fit:contain;mix-blend-mode:multiply}
+.tvp-brand{display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--plum);font-weight:700;margin-bottom:8px;text-decoration:none}
+a.tvp-brand:hover{color:var(--plum-dark);text-decoration:underline}
+.tvp-h1{font-size:23px;line-height:1.25;color:var(--ink);margin-bottom:16px}
+.tvp-price{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;margin-bottom:10px}
+.tvp-now{font-size:30px;font-weight:800;color:var(--ink)}
+.tvp-price s{font-size:16px;color:var(--ink-light)}
+.tvp-off{background:var(--gold-light);color:var(--gold-dark);font-weight:700;font-size:13px;padding:3px 9px;border-radius:6px}
+.tvp-stock{color:var(--ink-mid);font-size:14px;margin-bottom:14px}
+.tvp-cta{display:inline-block;background:var(--plum);color:#fff;border:0;font-weight:700;font-size:16px;padding:14px 26px;border-radius:10px;cursor:pointer;font-family:inherit}
+.tvp-cta:hover{background:var(--plum-dark)}
+.tvp-note{font-size:12px;color:var(--ink-light);margin-top:9px}
+a.tvp-merch{color:var(--plum);text-decoration:underline;text-underline-offset:2px}
+a.tvp-merch:hover{color:var(--plum-dark)}
+.rec-links{margin-top:34px}
+.rec-links h2{font-size:clamp(1rem,2.5vw,1.2rem);color:var(--ink);margin-bottom:.7rem}
+.rec-links__row{display:flex;flex-wrap:wrap;gap:8px}
+.rec-links__row .rec-pg{padding:7px 13px;font-size:13px}
+.rec-links__row .rec-pg span{color:var(--ink-light);font-weight:500}
+.tvp-block{margin-bottom:20px}
+.spec-tbl{width:100%;min-width:0;border-collapse:collapse;margin:.5rem 0 .2rem}
+.spec-tbl th,.spec-tbl td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--border-light);font-size:clamp(.84rem,2vw,.92rem)}
+.spec-tbl th{color:var(--ink-light);font-weight:600;width:42%}
+.spec-tbl td{color:var(--ink);font-weight:600}
+@media(min-width:760px){.tvp-main{grid-template-columns:460px 1fr}}
+@media(max-width:600px){.tvp-now{font-size:24px}}
+/* clear the fixed nav (60px) so breadcrumbs aren't hidden under the header */
+.rec-sec,.tvp-sec{padding-top:calc(60px + 1.75rem)}
+button.btn,button.comp-table__cta,button.card__cta{border:0;cursor:pointer;font-family:inherit}

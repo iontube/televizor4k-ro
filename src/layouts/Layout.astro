@@ -2,12 +2,12 @@
 interface Props {
   title: string;
   description: string;
+  modified?: string;   // YYYY-MM-DD of real last content change; omit to emit no modified_time (never fake freshness)
 }
-const { title, description } = Astro.props;
+const { title, description, modified } = Astro.props;
 const siteUrl = 'https://televizor4k.ro';
 const siteName = 'televizor4k.ro';
-const now = new Date();
-const isoNow = now.toISOString();
+const modIso = modified ? `${modified}T08:00:00+03:00` : null;
 ---
 <!DOCTYPE html>
 <html lang="ro">
@@ -21,7 +21,7 @@ const isoNow = now.toISOString();
 
   <meta property="og:type" content="article" />
   <meta property="article:published_time" content="2026-03-30T08:00:00+03:00" />
-  <meta property="article:modified_time" content={isoNow} />
+  {modIso && <meta property="article:modified_time" content={modIso} />}
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={siteUrl + Astro.url.pathname} />
@@ -80,6 +80,8 @@ const isoNow = now.toISOString();
       window.addEventListener('scroll',function(){b.classList.toggle('show',window.scrollY>600)});
       b.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
     })();
+    /* cloaked affiliate buttons: data-o = base64(slug) -> open /out/<slug>/ (Pages Function/redirect) */
+    document.addEventListener('click',function(e){var t=e.target,b=t.closest?t.closest('[data-o]'):null;if(b){e.preventDefault();try{window.open('/out/'+atob(b.getAttribute('data-o'))+'/','_blank','noopener');}catch(_){}}});
     document.querySelectorAll('.faq-card__q').forEach(function(q){
       q.addEventListener('click',function(){var item=this.parentElement;item.classList.toggle('active');this.setAttribute('aria-expanded',item.classList.contains('active'))});
     });

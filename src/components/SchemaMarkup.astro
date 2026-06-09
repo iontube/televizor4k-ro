@@ -1,8 +1,10 @@
 ---
 import products from '../data/products.json';
 
+interface Props { modified?: string }
+const { modified } = Astro.props;
 const siteUrl = 'https://televizor4k.ro';
-const now = new Date().toISOString();
+const now = modified ? `${modified}T08:00:00+03:00` : '2026-03-30T08:00:00+03:00';
 const all = [...(products.ieftine || []), ...(products.buget || []), ...(products.premium || [])];
 
 const websiteSchema = {

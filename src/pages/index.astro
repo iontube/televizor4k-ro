@@ -6,17 +6,23 @@ import ProductReview from '../components/ProductReview.astro';
 import Footer from '../components/Footer.astro';
 import SchemaMarkup from '../components/SchemaMarkup.astro';
 import products from '../data/products.json';
+import recomandari from '../data/recomandari.json';
 
 const title = 'Cele mai bune televizoare 4K in 2026: 18 modele comparate si testate';
 const description = 'Ce televizor 4K sa cumpar in 2026? Am comparat 18 televizoare 4K ieftine, de buget si premium de la Samsung, LG, Sony, TCL si Philips. LED, QLED, MiniLED si OLED de la 43 la 115 inch.';
 const all = [...(products.ieftine || []), ...(products.buget || []), ...(products.premium || [])];
 const count = all.length;
-const now = new Date();
-const updated = now.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' });
-const isoDate = now.toISOString().split('T')[0];
+const recMoney = (n) => Number(n).toLocaleString('ro-RO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' lei';
+const recEnc = (s) => Buffer.from(s, 'utf8').toString('base64');
+const topRecs = [...recomandari].filter((p) => p.oldPrice).sort((a, b) => (1 - b.price / b.oldPrice) - (1 - a.price / a.oldPrice)).slice(0, 6);
+while (topRecs.length < 6 && recomandari[topRecs.length]) topRecs.push(recomandari[topRecs.length]);
+// honest "Actualizat" = most recent REAL data change among the products shown (not build time)
+const mainModified = topRecs.reduce((m, p) => (p.modified && p.modified > m ? p.modified : m), '2026-03-30');
+const updated = new Date(mainModified + 'T08:00:00+03:00').toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' });
+const isoDate = mainModified;
 ---
-<Layout title={title} description={description}>
-  <SchemaMarkup />
+<Layout title={title} description={description} modified={mainModified}>
+  <SchemaMarkup modified={mainModified} />
   <Nav />
 
   <!-- HERO -->
@@ -52,44 +58,26 @@ const isoDate = now.toISOString().split('T')[0];
   <section id="top-tv">
     <div class="wrap">
       <div class="sec-head sec-head--center">
-        <span class="sec-head__tag">Top 3 recomandate</span>
-        <h2>Cele mai bune televizoare 4K in 2026</h2>
-        <p>Daca nu ai timp sa citesti toate cele 18 recenzii, acestea sunt cele 3 televizoare pe care le recomandam in functie de buget.</p>
+        <span class="sec-head__tag">Recomandate</span>
+        <h2>Televizoare 4K recomandate</h2>
+        <p>Peste {recomandari.length} de televizoare 4K din magazinele partenere, cu prețuri actualizate. Câteva dintre cele mai bune oferte de moment:</p>
       </div>
-      <div class="top3">
-        <a href={`#recenzie-${products.buget[1].name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')}`} class="top3__card top3__card--gold">
-          <span class="top3__medal top3__medal--gold">1</span>
-          <div class="top3__visual">
-            <img src={`/assets/images/products/${products.buget[1].slug}.webp`} alt={products.buget[1].name} width="90" height="60" loading="lazy" />
-          </div>
-          <div class="top3__body">
-            <span class="top3__cat">Best buy 2026</span>
-            <span class="top3__name">{products.buget[1].name}</span>
-            <span class="top3__why">QD-MiniLED, 100Hz, Google TV. Calitate premium la pret de buget</span>
-          </div>
-        </a>
-        <a href={`#recenzie-${products.premium[2].name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')}`} class="top3__card top3__card--silver">
-          <span class="top3__medal top3__medal--silver">2</span>
-          <div class="top3__visual">
-            <img src={`/assets/images/products/${products.premium[2].slug}.webp`} alt={products.premium[2].name} width="90" height="60" loading="lazy" />
-          </div>
-          <div class="top3__body">
-            <span class="top3__cat">Referinta OLED</span>
-            <span class="top3__name">{products.premium[2].name}</span>
-            <span class="top3__why">OLED evo, 4x HDMI 2.1, Dolby Vision IQ. Cel mai bun televizor la 65"</span>
-          </div>
-        </a>
-        <a href={`#recenzie-${products.ieftine[2].name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')}`} class="top3__card top3__card--bronze">
-          <span class="top3__medal top3__medal--bronze">3</span>
-          <div class="top3__visual">
-            <img src={`/assets/images/products/${products.ieftine[2].slug}.webp`} alt={products.ieftine[2].name} width="90" height="60" loading="lazy" />
-          </div>
-          <div class="top3__body">
-            <span class="top3__cat">Cel mai ieftin 55"</span>
-            <span class="top3__name">{products.ieftine[2].name}</span>
-            <span class="top3__why">55 inch cu Google TV la cel mai mic pret posibil</span>
-          </div>
-        </a>
+      <div class="products">
+        {topRecs.map((p) => (
+          <article class="card">
+            {p.oldPrice && <span class="card__badge card__badge--value">-{Math.round((1 - p.price / p.oldPrice) * 100)}%</span>}
+            <a class="card__img" href={`/tv/${p.slug}/`} aria-label={p.name}><img src={p.img} alt={p.name} width="200" height="200" loading="lazy" decoding="async" /></a>
+            <div class="card__body">
+              <a href={`/tv/${p.slug}/`}><h3 class="card__name">{p.name}</h3></a>
+              <div class="card__specs">{Object.values(p.specs).slice(1, 4).map((v) => <span class="card__spec">{v}</span>)}</div>
+              <div class="card__price-row"><span class="card__price">{recMoney(p.price)}</span>{p.oldPrice && <s>{recMoney(p.oldPrice)}</s>}</div>
+              <div class="card__foot"><a href={`/tv/${p.slug}/`} class="card__cta">Vezi detalii</a></div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div style="text-align:center;margin-top:1.75rem">
+        <a href="/recomandari/" class="btn btn--plum">Vezi toate cele {recomandari.length} de televizoare 4K &rarr;</a>
       </div>
     </div>
   </section>
@@ -216,7 +204,7 @@ const isoDate = now.toISOString().split('T')[0];
                   <td>{p.specs.clasa}</td>
                   <td>{p.specs.panou === 'QLED' && p.name.includes('METZ') ? 'Google TV' : p.name.includes('TCL') || p.name.includes('Diamant') ? 'Google TV' : p.name.includes('Samsung') ? 'Tizen' : p.name.includes('LG') ? 'WebOS' : 'Da'}</td>
                   <td>Nu</td>
-                  <td><a href={`/out/${p.slug}/`} class="comp-table__cta" rel="nofollow sponsored noopener" target="_blank">Vezi pret</a></td>
+                  <td><button class="comp-table__cta" data-o={recEnc(p.slug)} type="button">Vezi pret</button></td>
                 </tr>
               ))}
             </tbody>
@@ -241,7 +229,7 @@ const isoDate = now.toISOString().split('T')[0];
                   <td>{p.specs.clasa}</td>
                   <td>{p.name.includes('Horizon') || p.name.includes('TCL') || p.name.includes('Sony') ? 'Google TV' : p.name.includes('Samsung') ? 'Tizen' : p.name.includes('LG') ? 'WebOS' : 'Da'}</td>
                   <td>{p.name.includes('55C6K') ? 'Da' : 'Nu'}</td>
-                  <td><a href={`/out/${p.slug}/`} class="comp-table__cta" rel="nofollow sponsored noopener" target="_blank">Vezi pret</a></td>
+                  <td><button class="comp-table__cta" data-o={recEnc(p.slug)} type="button">Vezi pret</button></td>
                 </tr>
               ))}
             </tbody>
@@ -266,7 +254,7 @@ const isoDate = now.toISOString().split('T')[0];
                   <td>{p.specs.clasa}</td>
                   <td>{p.name.includes('Philips') ? 'Titan OS' : p.name.includes('Samsung') ? 'Tizen' : p.name.includes('LG') ? 'WebOS' : 'Google TV'}</td>
                   <td>{p.name.includes('Sony BRAVIA 3') ? 'Nu' : 'Da'}</td>
-                  <td><a href={`/out/${p.slug}/`} class="comp-table__cta" rel="nofollow sponsored noopener" target="_blank">Vezi pret</a></td>
+                  <td><button class="comp-table__cta" data-o={recEnc(p.slug)} type="button">Vezi pret</button></td>
                 </tr>
               ))}
             </tbody>
@@ -424,7 +412,7 @@ const isoDate = now.toISOString().split('T')[0];
             <span class="endcta__count">6 modele &rarr;</span>
           </a>
         </div>
-        <a href="#top-tv" class="btn btn--plum" style="margin-top:1.25rem">Inapoi la Top 3 &uarr;</a>
+        <a href="#top-tv" class="btn btn--plum" style="margin-top:1.25rem">Inapoi la recomandate &uarr;</a>
       </div>
     </div>
   </section>

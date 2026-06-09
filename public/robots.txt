@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /out/
 Allow: /
 
 Sitemap: https://televizor4k.ro/sitemap.xml

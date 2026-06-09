@@ -27,7 +27,7 @@ const reviewId = 'recenzie-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').re
     </div>
     {summary && <p class="card__summary">{summary}</p>}
     <div class="card__foot">
-      <a href={`/out/${slug}/`} class="card__cta" rel="nofollow sponsored noopener" target="_blank">Vezi Oferta</a>
+      <button class="card__cta" data-o={Buffer.from(slug, 'utf8').toString('base64')} type="button">Vezi Oferta</button>
       <a href={`#${reviewId}`} class="card__review-link">Citeste recenzia &darr;</a>
     </div>
   </div>

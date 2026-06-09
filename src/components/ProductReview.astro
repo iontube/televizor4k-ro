@@ -63,6 +63,6 @@ const reviewId = 'recenzie-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').re
   </div>
 
   <div class="review__cta-wrap">
-    <a href={`/out/${slug}/`} class="btn btn--cta" rel="nofollow sponsored noopener" target="_blank">Vezi pret si disponibilitate</a>
+    <button class="btn btn--cta" data-o={Buffer.from(slug, 'utf8').toString('base64')} type="button">Vezi pret si disponibilitate</button>
   </div>
 </article>
